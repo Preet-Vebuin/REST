@@ -1,0 +1,176 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "To-Do API",
+      "description": "API documentation for the To-Do List project",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api",
+        "description": "Local server"
+      }
+    ],
+    "paths": {
+      "/todos": {
+        "post": {
+          "summary": "Create a new To-Do",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
+                    "dueDate": { "type": "string", "format": "date" }
+                  },
+                  "required": ["title"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Task added successfully"
+            },
+            "400": {
+              "description": "Title is required!"
+            },
+            "500": {
+              "description": "Database error"
+            }
+          }
+        },
+        "get": {
+          "summary": "Get all To-Dos",
+          "responses": {
+            "200": {
+              "description": "List of all tasks",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Todo"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Database error"
+            }
+          }
+        }
+      },
+      "/todos/{id}": {
+        "get": {
+          "summary": "Get a To-Do by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "integer" }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Task found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Todo"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Task not found"
+            },
+            "500": {
+              "description": "Database error"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update a To-Do",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "integer" }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
+                    "dueDate": { "type": "string", "format": "date" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Task updated successfully"
+            },
+            "404": {
+              "description": "Task not found"
+            },
+            "500": {
+              "description": "Database error"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete a To-Do",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "integer" }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Task deleted successfully"
+            },
+            "404": {
+              "description": "Task not found"
+            },
+            "500": {
+              "description": "Database error"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Todo": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "title": { "type": "string" },
+            "description": { "type": "string" },
+            "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
+            "dueDate": { "type": "string", "format": "date" }
+          }
+        }
+      }
+    }
+  }
+  

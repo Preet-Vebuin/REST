@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import connection from "../DB/db"; // Import the single connection
+import connection from "../config/db"; // Import the single connection
 import { Todo } from "../Model/model";
 
 
@@ -40,7 +40,7 @@ export const getTodos = async (req: Request, res: Response) => {
 };
 
 // Get a single task by ID
-export const getTodoById = async (req: Request, res: Response) => {
+export const getTodoById = async (req: Request, res: Response) : Promise<any> => {
   try {
     const { id } = req.params;
     const [rows] = await connection.execute("SELECT * FROM todos WHERE id = ?", [id]);
